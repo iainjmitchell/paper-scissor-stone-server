@@ -16,6 +16,9 @@
   "bugs": {
     "url": "https://github.com/iainjmitchell/paper-scissor-stone-server/issues"
   },
+  "dependencies" : {
+    "express" : "*"
+  },
   "devDependencies": {
     "gulp" : "*",
     "gulp-mocha" : "*",
