@@ -17,7 +17,9 @@
     "url": "https://github.com/iainjmitchell/paper-scissor-stone-server/issues"
   },
   "dependencies" : {
-    "express" : "*"
+    "express": "3.4.8",
+    "ejs": "*",
+    "less-middleware": "*"
   },
   "devDependencies": {
     "gulp" : "*",

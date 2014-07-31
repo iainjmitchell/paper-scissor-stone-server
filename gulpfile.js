@@ -23,6 +23,13 @@ gulp.task('push', ['test'], function(){
 		.pipe(git.push());
 });
 
+gulp.task('deploy', ['test'], function(){
+	console.log('Tests passed! Deploying...');
+	return gulp
+		.src('./.')
+		.pipe(git.push('heroku'));
+});
+
 gulp.task('default', function(){
 	gulp.run('push');
 });
