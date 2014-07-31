@@ -1,11 +1,8 @@
 var express = require('express');
-var routes = require('./routes');
 var http = require('http');
 var path = require('path');
-
 var website = express();
 
-// all environments
 website.set('port', process.env.PORT || 3000);
 website.set('views', path.join(__dirname, 'views'));
 website.set('view engine', 'ejs');
@@ -23,7 +20,7 @@ if ('development' == website.get('env')) {
   website.use(express.errorHandler());
 }
 
-require('./routing')(website);
+require('./src/routing')(website);
 
 http.createServer(website).listen(website.get('port'), function(){
   console.log('Express server listening on port ' + website.get('port'));
