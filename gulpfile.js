@@ -5,7 +5,7 @@ var gulp = require('gulp'),
 gulp.task('test', function () {
 	var mochaRun = mocha({
 			reporter: 'nyan',
-			ui: 'tdd'
+			ui: 'bdd'
 		});
 
 	return gulp

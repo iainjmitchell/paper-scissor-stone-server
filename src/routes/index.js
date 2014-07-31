@@ -1,10 +1,4 @@
-var IndexController = function(){
-	this.get = function(request, response){
-		response.render('index', {
-			title: 'Paper Scissor Stone'
-		});
-	};	
-};
+var IndexController = require('../controller/TeamController');
 
 module.exports = function(website){
 	var controller = new IndexController();

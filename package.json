@@ -27,6 +27,7 @@
   "devDependencies": {
     "gulp" : "*",
     "gulp-mocha" : "*",
-    "gulp-git" : "*"
+    "gulp-git" : "*",
+    "chai" : "*"
   }
 }
