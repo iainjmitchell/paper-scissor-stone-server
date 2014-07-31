@@ -1,32 +1,30 @@
 var express = require('express');
 var routes = require('./routes');
-var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 
-var app = express();
+var website = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(app.router);
-app.use(require('less-middleware')(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'public')));
+website.set('port', process.env.PORT || 3000);
+website.set('views', path.join(__dirname, 'views'));
+website.set('view engine', 'ejs');
+website.use(express.favicon());
+website.use(express.logger('dev'));
+website.use(express.json());
+website.use(express.urlencoded());
+website.use(express.methodOverride());
+website.use(website.router);
+website.use(require('less-middleware')(path.join(__dirname, 'public')));
+website.use(express.static(path.join(__dirname, 'public')));
 
 // development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+if ('development' == website.get('env')) {
+  website.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/users', user.list);
+require('./routing')(website);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+http.createServer(website).listen(website.get('port'), function(){
+  console.log('Express server listening on port ' + website.get('port'));
 });
