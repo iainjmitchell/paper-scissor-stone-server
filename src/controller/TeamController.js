@@ -1,5 +1,5 @@
 var TeamController = function(){
-	var teams = [{name: 'a team'}];
+	var teams = [];
 
 	this.get = function(request, response){
 		response.json(teams);
