@@ -9,12 +9,12 @@ var BotController = function(){
 	this.add = function(request, response){
 		var bot = request.body;
 		if (botValidator.validate(bot)){
+			bots.push(bot);
 			response.send(200);
 		}
 		else{
 			response.send(422);
 		}
-		bots.push(bot);
 	};
 };
 

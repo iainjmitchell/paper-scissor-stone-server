@@ -37,11 +37,12 @@ describe('Bot Controller Tests', function(){
 		});
 
 		describe('missing a uri', function(){
+			var bot = {
+					name : 'helloWorld'
+				};
+
 			it('Then bot is rejected with 422 (Unprocessable)', function(done){
-				var bot = {
-						name : 'helloWorld'
-					},
-					mockResponse = {
+				var mockResponse = {
 						send : function(statusCode){
 							statusCode.should.equal(422);
 							done();
@@ -49,6 +50,18 @@ describe('Bot Controller Tests', function(){
 					},
 					botController = new BotController();
 				botController.add({body : bot}, mockResponse);
+			});
+
+			it('Then no bots are returned in response', function(done){
+				var mockResponse = {
+						json : function(bots){
+							bots.should.eql([]);
+							done();
+						}
+					},
+					botController = new BotController();	
+				botController.add({body : bot}, {send: function(){}});
+				botController.get(FAKE_REQUEST, mockResponse);
 			});
 		});
 
@@ -59,11 +72,7 @@ describe('Bot Controller Tests', function(){
 				};
 
 			it('Then bot is NOT rejected', function(done){
-				var bot = {
-						name : 'helloWorld2',
-						uri: 'http://aUri'
-					},
-					mockResponse = {
+				var mockResponse = {
 						send : function(statusCode){
 							statusCode.should.equal(200);
 							done();
