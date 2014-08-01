@@ -1,9 +1,9 @@
 var BotController = function(){
-	var teams = [],
+	var bots = [],
 		botValidator = new BotValidator();
 
 	this.get = function(request, response){
-		response.json(teams);
+		response.json(bots);
 	};
 
 	this.add = function(request, response){
@@ -14,6 +14,7 @@ var BotController = function(){
 		else{
 			response.send(422);
 		}
+		bots.push(bot);
 	};
 };
 

@@ -19,10 +19,10 @@ describe('Bot Controller Tests', function(){
 		});
 	});
 
-	describe('When one team is added', function(){
+	describe('When one bot is added', function(){
 		describe('missing a name', function(){
-			it('Then team is rejected with 422 (Unprocessable)', function(done){
-				var team = {
+			it('Then bot is rejected with 422 (Unprocessable)', function(done){
+				var bot = {
 						uri : 'http://bob.com'
 					},
 					mockResponse = {
@@ -32,13 +32,13 @@ describe('Bot Controller Tests', function(){
 						}
 					},
 					botController = new BotController();
-				botController.add({body : team}, mockResponse);
+				botController.add({body : bot}, mockResponse);
 			});
 		});
 
 		describe('missing a uri', function(){
-			it('Then team is rejected with 422 (Unprocessable)', function(done){
-				var team = {
+			it('Then bot is rejected with 422 (Unprocessable)', function(done){
+				var bot = {
 						name : 'helloWorld'
 					},
 					mockResponse = {
@@ -48,13 +48,18 @@ describe('Bot Controller Tests', function(){
 						}
 					},
 					botController = new BotController();
-				botController.add({body : team}, mockResponse);
+				botController.add({body : bot}, mockResponse);
 			});
 		});
 
 		describe('has a name and a uri', function(){
-			it('Then team is NOT rejected', function(done){
-				var team = {
+			var bot = {
+					name : 'helloWorld2' + Math.random(),
+					uri: 'http://aUri/' + Math.random() 
+				};
+
+			it('Then bot is NOT rejected', function(done){
+				var bot = {
 						name : 'helloWorld2',
 						uri: 'http://aUri'
 					},
@@ -65,21 +70,22 @@ describe('Bot Controller Tests', function(){
 						}
 					},
 					botController = new BotController();
-				botController.add({body : team}, mockResponse);
+				botController.add({body : bot}, mockResponse);
+			});
+
+			describe('And bots are retrieved', function(){
+				it('Then bot is returned in response', function(done){
+					var mockResponse = {
+							json : function(bots){
+								bots.should.eql([bot]);
+								done();
+							}
+						},
+						botController = new BotController();
+					botController.add({body : bot}, {send: function(){}});
+					botController.get(FAKE_REQUEST, mockResponse);
+				});
 			});
 		});
-
-		// describe('And bots are retrieved', function(){
-		// 	it('Then team is returned in response', function(done){
-		// 		var mockResponse = {
-		// 				json : function(bots){
-		// 					bots.should.eql([]);
-		// 					done();
-		// 				}
-		// 			},
-		// 			botController = new BotController();
-		// 		botController.get(FAKE_REQUEST, mockResponse);
-		// 	});
-		// });
 	});
 });
