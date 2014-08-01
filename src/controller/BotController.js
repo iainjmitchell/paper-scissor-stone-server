@@ -1,18 +1,25 @@
 var BotController = function(){
-	var teams = [];
+	var teams = [],
+		botValidator = new BotValidator();
 
 	this.get = function(request, response){
 		response.json(teams);
 	};
 
 	this.add = function(request, response){
-		var team = request.body;
-		if (!!team.name && !!team.uri){
+		var bot = request.body;
+		if (botValidator.validate(bot)){
 			response.send(200);
 		}
 		else{
 			response.send(422);
 		}
+	};
+};
+
+var BotValidator = function(){
+	this.validate = function(bot){
+		return (!!bot.name && !!bot.uri);
 	};
 };
 
