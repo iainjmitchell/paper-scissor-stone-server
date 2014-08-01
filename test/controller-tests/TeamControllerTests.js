@@ -36,6 +36,39 @@ describe('Team Controller Tests', function(){
 			});
 		});
 
+		describe('missing a uri', function(){
+			it('Then team is rejected with 422 (Unprocessable)', function(done){
+				var team = {
+						name : 'helloWorld'
+					},
+					mockResponse = {
+						send : function(statusCode){
+							statusCode.should.equal(422);
+							done();
+						}
+					},
+					teamController = new TeamController();
+				teamController.add({body : team}, mockResponse);
+			});
+		});
+
+		describe('has a name and a uri', function(){
+			it('Then team is NOT rejected', function(done){
+				var team = {
+						name : 'helloWorld2',
+						uri: 'http://aUri'
+					},
+					mockResponse = {
+						send : function(statusCode){
+							statusCode.should.equal(200);
+							done();
+						}
+					},
+					teamController = new TeamController();
+				teamController.add({body : team}, mockResponse);
+			});
+		});
+
 		// describe('And teams are retrieved', function(){
 		// 	it('Then team is returned in response', function(done){
 		// 		var mockResponse = {

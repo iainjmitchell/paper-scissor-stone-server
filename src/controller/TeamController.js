@@ -6,7 +6,12 @@ var TeamController = function(){
 	};
 
 	this.add = function(request, response){
-		response.send(422);
+		if (!!request.body.name && !!request.body.uri){
+			response.send(200);
+		}
+		else{
+			response.send(422);
+		}
 	};
 };
 
