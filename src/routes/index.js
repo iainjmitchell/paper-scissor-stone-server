@@ -1,6 +1,8 @@
 var IndexController = function(){
 	this.get = function(request, response){
-		response.send(200);
+		response.render('index', {
+			title : 'Paper Scissor Stone tournament'
+		});
 	};
 };
 
