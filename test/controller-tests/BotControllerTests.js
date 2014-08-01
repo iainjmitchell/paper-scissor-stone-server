@@ -1,20 +1,20 @@
-var TeamController = require('../../src/controller/TeamController');
+var BotController = require('../../src/controller/BotController');
 require('chai').should();
 
-describe('Team Controller Tests', function(){
+describe('Bot Controller Tests', function(){
 	var FAKE_REQUEST = {};
 
-	describe('When no teams added', function(){
-		describe('And teams are retrieved', function(){
-			it('Then no teams are returned in response', function(done){
+	describe('When no bots added', function(){
+		describe('And bots are retrieved', function(){
+			it('Then no bots are returned in response', function(done){
 				var mockResponse = {
-						json : function(teams){
-							teams.should.eql([]);
+						json : function(bots){
+							bots.should.eql([]);
 							done();
 						}
 					},
-					teamController = new TeamController();
-				teamController.get(FAKE_REQUEST, mockResponse);
+					botController = new BotController();
+				botController.get(FAKE_REQUEST, mockResponse);
 			});
 		});
 	});
@@ -31,8 +31,8 @@ describe('Team Controller Tests', function(){
 							done();
 						}
 					},
-					teamController = new TeamController();
-				teamController.add({body : team}, mockResponse);
+					botController = new BotController();
+				botController.add({body : team}, mockResponse);
 			});
 		});
 
@@ -47,8 +47,8 @@ describe('Team Controller Tests', function(){
 							done();
 						}
 					},
-					teamController = new TeamController();
-				teamController.add({body : team}, mockResponse);
+					botController = new BotController();
+				botController.add({body : team}, mockResponse);
 			});
 		});
 
@@ -64,21 +64,21 @@ describe('Team Controller Tests', function(){
 							done();
 						}
 					},
-					teamController = new TeamController();
-				teamController.add({body : team}, mockResponse);
+					botController = new BotController();
+				botController.add({body : team}, mockResponse);
 			});
 		});
 
-		// describe('And teams are retrieved', function(){
+		// describe('And bots are retrieved', function(){
 		// 	it('Then team is returned in response', function(done){
 		// 		var mockResponse = {
-		// 				json : function(teams){
-		// 					teams.should.eql([]);
+		// 				json : function(bots){
+		// 					bots.should.eql([]);
 		// 					done();
 		// 				}
 		// 			},
-		// 			teamController = new TeamController();
-		// 		teamController.get(FAKE_REQUEST, mockResponse);
+		// 			botController = new BotController();
+		// 		botController.get(FAKE_REQUEST, mockResponse);
 		// 	});
 		// });
 	});

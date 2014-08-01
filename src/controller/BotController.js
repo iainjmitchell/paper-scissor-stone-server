@@ -1,4 +1,4 @@
-var TeamController = function(){
+var BotController = function(){
 	var teams = [];
 
 	this.get = function(request, response){
@@ -6,7 +6,8 @@ var TeamController = function(){
 	};
 
 	this.add = function(request, response){
-		if (!!request.body.name && !!request.body.uri){
+		var team = request.body;
+		if (!!team.name && !!team.uri){
 			response.send(200);
 		}
 		else{
@@ -15,4 +16,4 @@ var TeamController = function(){
 	};
 };
 
-module.exports = TeamController; 
+module.exports = BotController; 
