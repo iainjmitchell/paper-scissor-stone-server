@@ -1,15 +1,10 @@
-var BotController = function(){
-	var bots = [],
-		botValidator = new BotValidator();
-
-	this.get = function(request, response){
-		response.json(bots);
-	};
+var BotController = function(game){
+	var botValidator = new BotValidator();
 
 	this.add = function(request, response){
 		var bot = request.body;
 		if (botValidator.validate(bot)){
-			bots.push(bot);
+			game.addCompetitor(bot);
 			response.send(200);
 		}
 		else{
