@@ -19,15 +19,18 @@
   "bugs": {
     "url": "https://github.com/iainjmitchell/paper-scissor-stone-server/issues"
   },
-  "dependencies" : {
+  "dependencies": {
     "express": "3.4.8",
     "ejs": "*",
     "less-middleware": "*"
   },
   "devDependencies": {
-    "gulp" : "*",
-    "gulp-mocha" : "*",
-    "gulp-git" : "*",
-    "chai" : "*"
+    "gulp": "*",
+    "gulp-mocha": "*",
+    "gulp-git": "*",
+    "chai": "*",
+    "gulp-qunit": "^0.3.3",
+    "qunitjs": "^1.14.0",
+    "jquery": "^2.1.1"
   }
 }

@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
 	mocha = require('gulp-mocha'),
-	git = require('gulp-git');
+	git = require('gulp-git'),
+	qunit = require('gulp-qunit');
 
 gulp.task('test', function () {
 	var mochaRun = mocha({
@@ -11,6 +12,13 @@ gulp.task('test', function () {
 	return gulp
 		.src('test/**/*.js')
 		.pipe(mochaRun);
+});
+
+qunit = require('gulp-qunit');
+
+gulp.task('public-test', function() {
+    return gulp.src('./public-test/**/*.html')
+        .pipe(qunit());
 });
 
 gulp.task('push', ['test'], function(){
