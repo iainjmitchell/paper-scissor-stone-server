@@ -2,21 +2,67 @@ require('chai').should();
 
 describe('When a game of paper, scissors, stone is started', function(){
 	describe('And a competitor is registered', function(){
-		it('Then the display is updated with the competitor', function(done){
-			var newCompetitor = {},
-				mockDisplay = {
-					showCompetitor : function(competitor){
-						competitor.should.equal(newCompetitor);
-						done();
-					}
-				};	
-			new Game(mockDisplay).addCompetitor(newCompetitor);
+		describe('and round is started', function(){
+			it('Then competitor score on display is set to 0 (there is no one to fight)', function(done){
+				var competitor = {
+						updateScore: function(score){
+							score.should.equal(0);
+							done();
+						}
+					};	
+				new Game()
+					.addCompetitor(competitor)
+					.startRound();
+			});
 		});
 	});
+
+	describe('And two competitors are registered who return no moves', function(){
+		describe('and round is started', function(){
+			it('Then both competitors score on display is set to 0', function(){
+				var noMoves = [],
+					competitor1 = new MockCompetitor(noMoves),
+					competitor2 = new MockCompetitor(noMoves);	
+				new Game()
+					.addCompetitor(competitor1)
+					.addCompetitor(competitor2)
+					.startRound();
+				competitor1.score.should.equal(0);
+				competitor2.score.should.equal(0);
+			});
+		});
+	});
+
+	var MockCompetitor = function(moves){
+		var moves = 0;
+		this.score = -1;
+		this.getMove = function(){
+			moves++;
+			return moves[count-1];
+		};
+		this.updateScore = function(newScore){
+			this.score = newScore;
+		};
+	};
+
+	// var FakeCompetitor = function(){
+	// 	this.getMove = function()
+	// 	this.updateScore = function(newScore){
+	// 		this.score = newScore;
+	// 	};
+	// };
 });
 
 var Game = function(display){
+	var competitors = [];
+
 	this.addCompetitor = function(competitor){
-		display.showCompetitor(competitor);
+		competitors.push(competitor);
+		return this;
+	};
+	this.startRound = function(){
+		competitors.forEach(function(competitor){
+			competitor.updateScore(0);
+		});
 	};
 };
