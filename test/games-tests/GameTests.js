@@ -83,20 +83,24 @@ describe('When a game of paper, scissors, stone is started', function(){
 		});
 	});
 
-	// describe('And two competitors are registered both of which return the same move', function(){
-	// 	describe('and round is started', function(){
-	// 		it('Then competitor who returns moves registers a win', function(){
-	// 			var noMoves = [],
-	// 				competitor1 = new MockCompetitor(alwaysStone),
-	// 				competitor2 = new MockCompetitor(noMoves);	
-	// 			new Game()
-	// 				.addCompetitor(competitor1)
-	// 				.addCompetitor(competitor2)
-	// 				.startRound();
-	// 			competitor1.matchesWon.should.equal(1);
-	// 		});
-	// 	});
-	// });
+	describe('And two competitors are registered both of which return the same move', function(){
+		describe('and round is started', function(){
+			var competitor1 = new MockCompetitor(alwaysStone),
+				competitor2 = new MockCompetitor(alwaysStone);	
+			new Game()
+				.addCompetitor(competitor1)
+				.addCompetitor(competitor2)
+				.startRound();
+
+			it('Then competitor1 does not register a win', function(){
+				competitor1.matchesWon.should.equal(0);
+			});
+
+			it('Then competitor2 does not register a win', function(){
+				competitor2.matchesWon.should.equal(0);
+			});
+		});
+	});
 
 	function alwaysReturns(move){
 		var count = 200,
