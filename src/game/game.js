@@ -1,3 +1,5 @@
+var GameRulesFactory = require('./GameRulesFactory');
+
 var Game = function(display){
 	var competitors = [],
 		matchesPlayed = [];
@@ -17,7 +19,7 @@ var Game = function(display){
 };
 
 var Match = function(opponent1, opponent2){
-	var rules = new GameRules();
+	var rulesFactory = new GameRulesFactory();
 
 	this.start = function(){
 		opponent1.matchStarted();
@@ -28,27 +30,13 @@ var Match = function(opponent1, opponent2){
 	function playPoint(){
 		var opponent1Move = opponent1.getMove(),
 			opponent2Move = opponent2.getMove();
-		if (rules.move(opponent2Move).beats(opponent1Move)){
+		if (rulesFactory.create(opponent2Move).beats(opponent1Move)){
 			opponent2.win();
 		}
-		if (rules.move(opponent1Move).beats(opponent2Move)){
+		if (rulesFactory.create(opponent1Move).beats(opponent2Move)){
 			opponent1.win();
 		} 
 	}
-};
-
-var GameRules = function(){
-	var rules = {
-			"paper" : { beats : [undefined, "stone"] },
-			"stone" : { beats : [undefined]} 
-		};
-	this.move = function(move){
-		return {
-			beats : function(opponentsMove){
-				return !!move && (move !== opponentsMove) && rules[move].beats.indexOf(opponentsMove) !== -1;
-			}
-		};
-	};
 };
 
 module.exports = Game;
