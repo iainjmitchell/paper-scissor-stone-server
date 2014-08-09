@@ -11,12 +11,19 @@ var Game = function(display){
 			competitor2 = competitors[1];
 
 		if (!!competitor1 && competitor2){
-			match(competitor1, competitor2);
+			new Match(competitor1, competitor2).start();
 		}
 	};
-	function match(opponent1, opponent2){
+};
+
+var Match = function(opponent1, opponent2){
+	this.start = function(){
 		opponent1.matchStarted();
 		opponent2.matchStarted();
+		playPoint();
+	};
+
+	function playPoint(){
 		var turn = opponent1.getMove(),
 			otherTurn = opponent2.getMove();
 		if (!!turn){

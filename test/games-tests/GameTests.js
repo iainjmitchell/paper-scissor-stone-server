@@ -62,7 +62,7 @@ describe('When a game of paper, scissors, stone is started', function(){
 		});
 	});
 
-	describe('And two competitors are registered one of which returns no moves', function(){
+	describe('And two competitors are registered the second one of which returns no moves', function(){
 		describe('and round is started', function(){
 			var noMoves = [],
 				competitor1 = new MockCompetitor(alwaysStone),
@@ -73,11 +73,11 @@ describe('When a game of paper, scissors, stone is started', function(){
 				.addCompetitor(competitor2)
 				.startRound();
 				
-			it('Then competitor who returns moves registers a win', function(){
+			it('Then competitor1 registers a win', function(){
 				competitor1.matchesWon.should.equal(1);
 			});
 
-			it('Then competitor who does not return moves has 0 wins', function(){
+			it('Then competitor2 has 0 wins', function(){
 				competitor2.matchesWon.should.equal(0);
 			});
 		});
