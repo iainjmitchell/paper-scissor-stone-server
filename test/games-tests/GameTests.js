@@ -1,6 +1,20 @@
 var Game = require('../../src/game/game.js');
 require('chai').should();
 
+var MockCompetitor = function(moves){
+	var movesMade = 0;
+	this.matchesWon = 0;
+	this.getMove = function(){
+		movesMade++;
+		return moves[movesMade-1];
+	};
+	this.win = function(){
+		this.matchesWon++;
+	};
+	this.matchStarted = function(){};
+};
+
+
 describe('When a game of paper, scissors, stone is started', function(){
 	var alwaysStone = alwaysReturns('stone');
 
@@ -50,18 +64,39 @@ describe('When a game of paper, scissors, stone is started', function(){
 
 	describe('And two competitors are registered one of which returns no moves', function(){
 		describe('and round is started', function(){
+			var noMoves = [],
+				competitor1 = new MockCompetitor(alwaysStone),
+				competitor2 = new MockCompetitor(noMoves);	
+			
+			new Game()
+				.addCompetitor(competitor1)
+				.addCompetitor(competitor2)
+				.startRound();
+				
 			it('Then competitor who returns moves registers a win', function(){
-				var noMoves = [],
-					competitor1 = new MockCompetitor(alwaysStone),
-					competitor2 = new MockCompetitor(noMoves);	
-				new Game()
-					.addCompetitor(competitor1)
-					.addCompetitor(competitor2)
-					.startRound();
 				competitor1.matchesWon.should.equal(1);
+			});
+
+			it('Then competitor who does not return moves has 0 wins', function(){
+				competitor2.matchesWon.should.equal(0);
 			});
 		});
 	});
+
+	// describe('And two competitors are registered both of which return the same move', function(){
+	// 	describe('and round is started', function(){
+	// 		it('Then competitor who returns moves registers a win', function(){
+	// 			var noMoves = [],
+	// 				competitor1 = new MockCompetitor(alwaysStone),
+	// 				competitor2 = new MockCompetitor(noMoves);	
+	// 			new Game()
+	// 				.addCompetitor(competitor1)
+	// 				.addCompetitor(competitor2)
+	// 				.startRound();
+	// 			competitor1.matchesWon.should.equal(1);
+	// 		});
+	// 	});
+	// });
 
 	function alwaysReturns(move){
 		var count = 200,
@@ -72,17 +107,6 @@ describe('When a game of paper, scissors, stone is started', function(){
 		return moves;
 	}
 
-	var MockCompetitor = function(moves){
-		var movesMade = 0;
-		this.matchesWon = 0;
-		this.getMove = function(){
-			movesMade++;
-			return moves[movesMade-1];
-		};
-		this.win = function(){
-			this.matchesWon++;
-		};
-		this.matchStarted = function(){};
-	};
+	
 });
 
