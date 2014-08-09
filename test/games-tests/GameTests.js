@@ -5,22 +5,33 @@ describe('When a game of paper, scissors, stone is started', function(){
 
 	describe('And a competitor is registered', function(){
 		describe('and round is started', function(){
-			it('Then competitor score on display is set to 0 (there is no one to fight)', function(done){
-				var competitor = {
-						updateScore: function(score){
-							score.should.equal(0);
-							done();
-						}
-					};	
+			it('Then competitor score on display is set to 0 (there is no one to fight)', function(){
+				var mockCompetitor = new MockCompetitor();
 				new Game()
-					.addCompetitor(competitor)
+					.addCompetitor(mockCompetitor)
 					.startRound();
+				mockCompetitor.score.should.equal(0);
 			});
 		});
 	});
 
 	describe('And two competitors are registered who return no moves', function(){
 		describe('and round is started', function(){
+			it('Then both competitors are notified of round starting', function(){
+				var competitorsNotifiedOfRoundstarting = 0,
+					mockCompetitor = {
+						matchStarted : function(){
+							competitorsNotifiedOfRoundstarting++;
+						},
+						updateScore : function(){}
+					};
+				new Game()
+					.addCompetitor(mockCompetitor)
+					.addCompetitor(mockCompetitor)
+					.startRound();
+				competitorsNotifiedOfRoundstarting.should.equal(2);
+			});
+
 			it('Then both competitors score on display is set to 0', function(){
 				var noMoves = [],
 					competitor1 = new MockCompetitor(noMoves),
@@ -69,6 +80,7 @@ describe('When a game of paper, scissors, stone is started', function(){
 		this.updateScore = function(newScore){
 			this.score = newScore;
 		};
+		this.matchStarted = function(){};
 	};
 
 	// var FakeCompetitor = function(){
@@ -88,6 +100,7 @@ var Game = function(display){
 	};
 	this.startRound = function(){
 		competitors.forEach(function(competitor){
+			competitor.matchStarted();
 			competitor.updateScore(0);
 		});
 	};
