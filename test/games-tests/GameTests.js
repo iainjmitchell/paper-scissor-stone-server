@@ -24,7 +24,7 @@ describe('When a game of paper, scissors, stone is started', function(){
 						matchStarted : function(){
 							competitorsNotifiedOfRoundstarting++;
 						},
-						wonMatch : function(){},
+						win : function(){},
 						getMove : function(){}
 					};
 				new Game()
@@ -79,7 +79,7 @@ describe('When a game of paper, scissors, stone is started', function(){
 			movesMade++;
 			return moves[movesMade-1];
 		};
-		this.wonMatch = function(){
+		this.win = function(){
 			this.matchesWon++;
 		};
 		this.matchStarted = function(){};
