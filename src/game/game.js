@@ -1,8 +1,8 @@
 var GameRulesFactory = require('./GameRulesFactory');
 
-var Game = function(display){
+var Game = function(rules){
 	var competitors = [],
-		matchesPlayed = [];
+		matchFactory = new MatchFactory(rules);
 
 	this.addCompetitor = function(competitor){
 		competitors.push(competitor);
@@ -13,14 +13,20 @@ var Game = function(display){
 			competitor2 = competitors[1];
 
 		if (!!competitor1 && competitor2){
-			new Match(competitor1, competitor2).start();
+			matchFactory.create(competitor1, competitor2).start();
 		}
 	};
 };
 
-var Match = function(opponent1, opponent2){
-	var rulesFactory = new GameRulesFactory();
+var MatchFactory = function(rules){
+	var rulesFactory = new GameRulesFactory(rules);
 
+	this.create = function(opponent1, opponent2){
+		return new Match(opponent1, opponent2, rulesFactory);
+	};
+};
+
+var Match = function(opponent1, opponent2, rulesFactory){
 	this.start = function(){
 		opponent1.matchStarted();
 		opponent2.matchStarted();

@@ -18,13 +18,18 @@ var MockCompetitor = function(moves){
 describe('When a game of paper, scissors, stone is started', function(){
 	var alwaysStone = alwaysReturns('stone'),
 		alwaysPaper = alwaysReturns('paper'),
-		alwaysScissors = alwaysReturns('scissors');
+		alwaysScissors = alwaysReturns('scissors'),
+		rules = {
+			"paper" : { beats : ["stone"] },
+			"stone" : { beats : ["scissors"]},
+			"scissors": { beats : ["paper"]}
+		};
 
 	describe('And a competitor is registered', function(){
 		describe('and round is started', function(){
 			it('Then competitor wins is 0 (there is no one to fight)', function(){
 				var mockCompetitor = new MockCompetitor();
-				new Game()
+				new Game(rules)
 					.addCompetitor(mockCompetitor)
 					.startRound();
 				mockCompetitor.matchesWon.should.equal(0);
@@ -43,7 +48,7 @@ describe('When a game of paper, scissors, stone is started', function(){
 						win : function(){},
 						getMove : function(){}
 					};
-				new Game()
+				new Game(rules)
 					.addCompetitor(mockCompetitor)
 					.addCompetitor(mockCompetitor)
 					.startRound();
@@ -54,7 +59,7 @@ describe('When a game of paper, scissors, stone is started', function(){
 				var noMoves = [],
 					competitor1 = new MockCompetitor(noMoves),
 					competitor2 = new MockCompetitor(noMoves);	
-				new Game()
+				new Game(rules)
 					.addCompetitor(competitor1)
 					.addCompetitor(competitor2)
 					.startRound();
@@ -71,7 +76,7 @@ describe('When a game of paper, scissors, stone is started', function(){
 					competitor1 = new MockCompetitor(alwaysStone),
 					competitor2 = new MockCompetitor(noMoves);	
 				
-				new Game()
+				new Game(rules)
 					.addCompetitor(competitor1)
 					.addCompetitor(competitor2)
 					.startRound();
@@ -92,7 +97,7 @@ describe('When a game of paper, scissors, stone is started', function(){
 					competitor1 = new MockCompetitor(noMoves),
 					competitor2 = new MockCompetitor(alwaysStone);	
 				
-				new Game()
+				new Game(rules)
 					.addCompetitor(competitor1)
 					.addCompetitor(competitor2)
 					.startRound();
@@ -111,7 +116,7 @@ describe('When a game of paper, scissors, stone is started', function(){
 			describe('and round is started', function(){
 				var competitor1 = new MockCompetitor(alwaysStone),
 					competitor2 = new MockCompetitor(alwaysStone);	
-				new Game()
+				new Game(rules)
 					.addCompetitor(competitor1)
 					.addCompetitor(competitor2)
 					.startRound();
@@ -126,12 +131,12 @@ describe('When a game of paper, scissors, stone is started', function(){
 			});
 		});
 
-		describe('And the first always returns stone', function(){
+		describe('And the first always a values stone', function(){
 			describe('And the second always returns paper', function(){
 				describe('and round is started', function(){
 					var competitor1 = new MockCompetitor(alwaysStone),
 						competitor2 = new MockCompetitor(alwaysPaper);	
-					new Game()
+					new Game(rules)
 						.addCompetitor(competitor1)
 						.addCompetitor(competitor2)
 						.startRound();
@@ -142,25 +147,6 @@ describe('When a game of paper, scissors, stone is started', function(){
 
 					it('Then competitor2 does register a win', function(){
 						competitor2.matchesWon.should.equal(1);
-					});
-				});
-			});
-
-			describe('And the second always returns scissors', function(){
-				describe('and round is started', function(){
-					var competitor1 = new MockCompetitor(alwaysStone),
-						competitor2 = new MockCompetitor(alwaysScissors);	
-					new Game()
-						.addCompetitor(competitor1)
-						.addCompetitor(competitor2)
-						.startRound();
-
-					it('Then competitor1 does not register a win', function(){
-						competitor1.matchesWon.should.equal(1);
-					});
-
-					it('Then competitor2 does register a win', function(){
-						competitor2.matchesWon.should.equal(0);
 					});
 				});
 			});
@@ -177,7 +163,5 @@ describe('When a game of paper, scissors, stone is started', function(){
 		};
 		return moves;
 	}
-
-	
 });
 
