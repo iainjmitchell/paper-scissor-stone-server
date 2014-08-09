@@ -27,14 +27,7 @@ var MatchFactory = function(rules){
 };
 
 var Match = function(opponent1, opponent2, rulesFactory){
-	var WIN_POINT = 100,
-		MAX_DRAWN_POINTS = 200,
-		drawn_points = 0,
-		scores = {
-			'opponent1' : 0,
-			'opponent2' : 0 
-		},
-		matchScoreboard = new MatchScoreboard(opponent1, opponent2, playPoint);
+	var matchScoreboard = new MatchScoreboard(opponent1, opponent2, playPoint);
 
 	this.start = function(){
 		opponent1.matchStarted();
@@ -47,9 +40,9 @@ var Match = function(opponent1, opponent2, rulesFactory){
 			opponent2Move = opponent2.getMove();
 
 		if (rulesFactory.create(opponent2Move).beats(opponent1Move)){
-			matchScoreboard.opponent2Scores();
+			matchScoreboard.pointScoredBy(opponent2);
 		} else if (rulesFactory.create(opponent1Move).beats(opponent2Move)){
-			matchScoreboard.opponent1Scores();
+			matchScoreboard.pointScoredBy(opponent1);
 		} 
 		else matchScoreboard.draw(); 
 	}
@@ -61,25 +54,21 @@ var MatchScoreboard = function(opponent1, opponent2, playNextPoint){
 			MAX_DRAWN_POINTS : 200
 		},
 		drawn_points = 0,
-		scores = {
-			'opponent1' : 0,
-			'opponent2' : 0 
-		};
+		scores = [
+			{ opponent : opponent1, amount : 0 },
+			{ opponent : opponent2, amount : 0 }
+		];
 
-	this.opponent1Scores = function(){
-		scores['opponent1']++;
-		if (scores['opponent1'] === SCORING_RULES.WIN_POINT){
-			opponent1.win();
-		}
-		else playNextPoint();
-	};
-
-	this.opponent2Scores = function(){
-		scores['opponent2']++;
-		if (scores['opponent2'] === SCORING_RULES.WIN_POINT){
-			opponent2.win();
-		}
-		else playNextPoint();
+	this.pointScoredBy = function(opponent){
+		scores.forEach(function(score){
+			if (score.opponent === opponent){
+				score.amount++;
+				if (score.amount === SCORING_RULES.WIN_POINT){
+					score.opponent.win();
+				}
+				else playNextPoint();
+			}
+		});
 	};
 
 	this.draw = function(){
