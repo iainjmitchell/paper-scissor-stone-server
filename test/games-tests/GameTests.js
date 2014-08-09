@@ -83,6 +83,27 @@ describe('When a game of paper, scissors, stone is started', function(){
 				});
 			});
 		});
+
+		describe('And the first one returns no moves', function(){
+			describe('and round is started', function(){
+				var noMoves = [],
+					competitor1 = new MockCompetitor(noMoves),
+					competitor2 = new MockCompetitor(alwaysStone);	
+				
+				new Game()
+					.addCompetitor(competitor1)
+					.addCompetitor(competitor2)
+					.startRound();
+					
+				it('Then competitor2 registers a win', function(){
+					competitor2.matchesWon.should.equal(1);
+				});
+
+				it('Then competitor1 has 0 wins', function(){
+					competitor1.matchesWon.should.equal(0);
+				});
+			});
+		});
 	});
 
 	describe('And two competitors are registered both of which return the same move', function(){

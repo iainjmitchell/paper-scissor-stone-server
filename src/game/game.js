@@ -17,6 +17,8 @@ var Game = function(display){
 };
 
 var Match = function(opponent1, opponent2){
+	var rules = new GameRules();
+
 	this.start = function(){
 		opponent1.matchStarted();
 		opponent2.matchStarted();
@@ -24,14 +26,25 @@ var Match = function(opponent1, opponent2){
 	};
 
 	function playPoint(){
-		var turn = opponent1.getMove(),
-			otherTurn = opponent2.getMove();
-		if (!!turn){
-			if (turn !== otherTurn){
-				opponent1.win();
-			}
+		var opponent1Move = opponent1.getMove(),
+			opponent2Move = opponent2.getMove();
+		if (rules.move(opponent2Move).beats(opponent1Move)){
+			opponent2.win();
+		}
+		if (rules.move(opponent1Move).beats(opponent2Move)){
+			opponent1.win();
 		} 
 	}
+};
+
+var GameRules = function(){
+	this.move = function(move){
+		return {
+			beats : function(opponentsMove){
+				return !!move && (move !== opponentsMove);
+			}
+		};
+	};
 };
 
 module.exports = Game;
