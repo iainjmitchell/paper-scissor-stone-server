@@ -38,10 +38,14 @@ var Match = function(opponent1, opponent2){
 };
 
 var GameRules = function(){
+	var rules = {
+			"paper" : { beats : [undefined, "stone"] },
+			"stone" : { beats : [undefined]} 
+		};
 	this.move = function(move){
 		return {
 			beats : function(opponentsMove){
-				return !!move && (move !== opponentsMove);
+				return !!move && (move !== opponentsMove) && rules[move].beats.indexOf(opponentsMove) !== -1;
 			}
 		};
 	};
