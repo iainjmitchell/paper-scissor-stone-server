@@ -62,23 +62,25 @@ describe('When a game of paper, scissors, stone is started', function(){
 		});
 	});
 
-	describe('And two competitors are registered the second one of which returns no moves', function(){
-		describe('and round is started', function(){
-			var noMoves = [],
-				competitor1 = new MockCompetitor(alwaysStone),
-				competitor2 = new MockCompetitor(noMoves);	
-			
-			new Game()
-				.addCompetitor(competitor1)
-				.addCompetitor(competitor2)
-				.startRound();
+	describe('And two competitors are registered', function(){
+		describe('And the second one returns no moves', function(){
+			describe('and round is started', function(){
+				var noMoves = [],
+					competitor1 = new MockCompetitor(alwaysStone),
+					competitor2 = new MockCompetitor(noMoves);	
 				
-			it('Then competitor1 registers a win', function(){
-				competitor1.matchesWon.should.equal(1);
-			});
+				new Game()
+					.addCompetitor(competitor1)
+					.addCompetitor(competitor2)
+					.startRound();
+					
+				it('Then competitor1 registers a win', function(){
+					competitor1.matchesWon.should.equal(1);
+				});
 
-			it('Then competitor2 has 0 wins', function(){
-				competitor2.matchesWon.should.equal(0);
+				it('Then competitor2 has 0 wins', function(){
+					competitor2.matchesWon.should.equal(0);
+				});
 			});
 		});
 	});
