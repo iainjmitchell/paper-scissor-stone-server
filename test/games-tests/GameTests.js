@@ -19,6 +19,7 @@ describe('When a game of paper, scissors, stone is started', function(){
 	var alwaysStone = alwaysReturns('stone'),
 		alwaysPaper = alwaysReturns('paper'),
 		alwaysScissors = alwaysReturns('scissors'),
+		halfPaperHalfStone = mixOf('paper', 'stone'),
 		rules = {
 			"paper" : { beats : ["stone"] },
 			"stone" : { beats : ["scissors"]},
@@ -151,9 +152,38 @@ describe('When a game of paper, scissors, stone is started', function(){
 				});
 			});
 		});
+
+		describe('And the first returns half paper and half stone', function(){
+			describe('And the second always returns paper', function(){
+				describe('and round is started', function(){
+					var competitor1 = new MockCompetitor(halfPaperHalfStone),
+						competitor2 = new MockCompetitor(alwaysPaper);	
+					new Game(rules)
+						.addCompetitor(competitor1)
+						.addCompetitor(competitor2)
+						.startRound();
+
+					it('Then competitor1 does not register a win', function(){
+						competitor1.matchesWon.should.equal(0);
+					});
+
+					it('Then competitor2 does register a win', function(){
+						competitor2.matchesWon.should.equal(1);
+					});
+				});
+			});
+		});
 	});
 
-	
+	function mixOf(move1, move2){
+		var count = 200,
+			moves = [];
+		for(count; count > 0; count--){	
+			var move = (count % 2 === 0) ? move1 : move2;
+			moves.push(move);
+		};
+		return moves;
+	}
 
 	function alwaysReturns(move){
 		var count = 200,
