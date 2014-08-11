@@ -10,9 +10,10 @@ var Game = function(rules){
 	};
 	this.startRound = function(){
 		var competitor1 = competitors[0],
-			competitor2 = competitors[1];
-
-		if (!!competitor1 && competitor2){
+			count = 1;
+		
+		for (count; count < competitors.length; count++){
+			var competitor2 = competitors[count];
 			matchFactory.create(competitor1, competitor2).start();
 		}
 	};

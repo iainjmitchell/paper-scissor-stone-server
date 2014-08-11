@@ -173,6 +173,44 @@ describe('When a game of paper, scissors, stone is started', function(){
 				});
 			});
 		});
+
+		describe('And three competitors are registered who return no moves', function(){
+			describe('and round is started', function(){
+				it('Then first competitor is notified twice of round starting', function(){
+					var competitorsNotifiedOfRoundstarting = 0,
+						mockCompetitor = {
+							matchStarted : function(){
+								competitorsNotifiedOfRoundstarting++;
+							},
+							win : function(){},
+							getMove : function(){}
+						};
+					new Game(rules)
+						.addCompetitor(mockCompetitor)
+						.addCompetitor(new MockCompetitor([]))
+						.addCompetitor(new MockCompetitor([]))
+						.startRound();
+					competitorsNotifiedOfRoundstarting.should.equal(2);
+				});
+
+				// it('Then second competitor is notified twice of round starting', function(){
+				// 	var competitorsNotifiedOfRoundstarting = 0,
+				// 		mockCompetitor = {
+				// 			matchStarted : function(){
+				// 				competitorsNotifiedOfRoundstarting++;
+				// 			},
+				// 			win : function(){},
+				// 			getMove : function(){}
+				// 		};
+				// 	new Game(rules)
+				// 		.addCompetitor(new MockCompetitor([]))
+				// 		.addCompetitor(mockCompetitor)
+				// 		.addCompetitor(new MockCompetitor([]))
+				// 		.startRound();
+				// 	competitorsNotifiedOfRoundstarting.should.equal(2);
+				// });
+			});
+		});
 	});
 
 	function mixOf(move1, move2){
