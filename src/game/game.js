@@ -1,8 +1,7 @@
 var CompetitorMatchesFactory = require('./CompetitorMatchesFactory');
 
 var Game = function(rules){
-	var competitors = [],
-		competitorMatchesFactory = new CompetitorMatchesFactory(rules, startRoundForNextCompetitor);
+	var competitors = [];
 
 	this.addCompetitor = function(competitor){
 		competitors.push(competitor);
@@ -13,12 +12,20 @@ var Game = function(rules){
 		competitors.forEach(function(competitor){
 			competitor.roundStarted();
 		});
-		startRoundForNextCompetitor();
+		new GameRound(rules, competitors).start();
+		return this;
 	};
+};
+
+var GameRound = function(rules, competitors){
+	var remainingCompetitors = competitors.slice(),
+		competitorMatchesFactory = new CompetitorMatchesFactory(rules, startRoundForNextCompetitor);
+
+	this.start = startRoundForNextCompetitor;
 
 	function startRoundForNextCompetitor(){
-		var competitor = competitors.pop();
-		competitorMatchesFactory.create(competitor, competitors).play();
+		var competitor = remainingCompetitors.pop();
+		competitorMatchesFactory.create(competitor, remainingCompetitors).play();
 	}
 };
 
