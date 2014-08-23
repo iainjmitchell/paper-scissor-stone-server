@@ -96,6 +96,15 @@ describe('When a competitor is created', function(){
 					.win();
 				fakeEventStore.events['score'].round.should.equal(1);
 			});
+
+			it('Then an event is raised stating that total score is 1', function(){
+				var fakeEventStore = new FakeEventStore();
+				new Competitor(fakeEventStore, new MockBot(), {})
+					.roundStarted()
+					.win();
+				fakeEventStore.events['score'].total.should.equal(1);
+			});
+
 			describe('And another win is recorded', function(){
 				it('Then an event is raised stating a score of round is 2', function(){
 					var fakeEventStore = new FakeEventStore();
@@ -162,7 +171,8 @@ var Competitor = function(eventStore, bot, competitorDetails){
 		score++;
 		var eventDetails = {
 			id : competitorDetails.id, 
-			round : score
+			round : score,
+			total : score
 		};
 		eventStore.notify(SCORE_EVENT, eventDetails);
 		return this;
