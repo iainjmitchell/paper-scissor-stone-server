@@ -58,6 +58,14 @@ describe('When a competitor is created', function(){
 			});
 		});
 	});
+
+	describe('When a match is started', function(){
+		it('Then bot is informed of match start', function(done){
+			var mockBot = new MockBot();
+			mockBot.startMatch = done;
+			new Competitor(new FakeEventStore(), mockBot, {}).matchStarted();
+		});
+	});
 });
 
 var Competitor = function(eventStore, bot, competitorDetails){
@@ -75,6 +83,8 @@ var Competitor = function(eventStore, bot, competitorDetails){
 		eventStore.notify(NEW_ROUND_EVENT, {number : numberOfRounds});
 		return this;
 	};
+
+	this.matchStarted = bot.startMatch;
 
 	init();
 };
