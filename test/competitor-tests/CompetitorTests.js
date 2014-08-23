@@ -123,6 +123,21 @@ describe('When a competitor is created', function(){
 						.win();
 					fakeEventStore.events['score'].total.should.equal(2);
 				});
+
+				describe('And another round is started', function(){
+					describe('And another win is recorded', function(){
+						it('Then an event is raised stating that total score is 3', function(){
+							var fakeEventStore = new FakeEventStore();
+							new Competitor(fakeEventStore, new MockBot(), {})
+								.roundStarted()
+								.win()
+								.win()
+								.roundStarted()
+								.win();
+							fakeEventStore.events['score'].total.should.equal(3);
+						});
+					});
+				});
 			});
 		});
 	});
