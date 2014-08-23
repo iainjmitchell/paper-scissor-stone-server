@@ -1,4 +1,4 @@
-var Game = require('../../src/game/game.js');
+var Game = require('../../src/game/Game.js');
 require('chai').should();
 
 var MockCompetitor = function(moves){
