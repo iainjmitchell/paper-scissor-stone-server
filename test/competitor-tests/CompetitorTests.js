@@ -84,8 +84,17 @@ describe('When a competitor is created', function(){
 				var competitorId = Math.random(),
 					fakeEventStore = new FakeEventStore();
 				new Competitor(fakeEventStore, new MockBot(), {id : competitorId})
+					.roundStarted()
 					.win();
 				fakeEventStore.events['score'].id.should.equal(competitorId);
+			});
+
+			it('Then an event is raised stating a score of round is 1', function(){
+				var fakeEventStore = new FakeEventStore();
+				new Competitor(fakeEventStore, new MockBot(), {})
+					.roundStarted()
+					.win();
+				fakeEventStore.events['score'].round.should.equal(1);
 			});
 		});
 	});
@@ -133,7 +142,7 @@ var Competitor = function(eventStore, bot, competitorDetails){
 	this.getMove = bot.move;
 
 	this.win = function(){
-		eventStore.notify('score', { id : competitorDetails.id });
+		eventStore.notify('score', { id : competitorDetails.id, round : 1 });
 	};
 
 	init();
