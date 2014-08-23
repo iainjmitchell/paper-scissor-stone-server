@@ -9,14 +9,19 @@ var Game = function(rules){
 		return this;
 	};
 	this.startRound = function(){
-		var competitor1 = competitors[0],
-			count = 1;
-		
-		for (count; count < competitors.length; count++){
-			var competitor2 = competitors[count];
-			matchFactory.create(competitor1, competitor2).start();
+		var competitor = competitors.pop();
+		playMatches(competitor, competitors);
+		if (competitors.length !== 0){
+			this.startRound();
 		}
 	};
+	function playMatches(competitor, opponents){
+		var count = 0;
+		for (count; count < opponents.length; count++){
+			var opponent = opponents[count];
+			matchFactory.create(competitor, opponent).start();
+		}
+	}
 };
 
 module.exports = Game;

@@ -193,22 +193,22 @@ describe('When a game of paper, scissors, stone is started', function(){
 					competitorsNotifiedOfRoundstarting.should.equal(2);
 				});
 
-				// it('Then second competitor is notified twice of round starting', function(){
-				// 	var competitorsNotifiedOfRoundstarting = 0,
-				// 		mockCompetitor = {
-				// 			matchStarted : function(){
-				// 				competitorsNotifiedOfRoundstarting++;
-				// 			},
-				// 			win : function(){},
-				// 			getMove : function(){}
-				// 		};
-				// 	new Game(rules)
-				// 		.addCompetitor(new MockCompetitor([]))
-				// 		.addCompetitor(mockCompetitor)
-				// 		.addCompetitor(new MockCompetitor([]))
-				// 		.startRound();
-				// 	competitorsNotifiedOfRoundstarting.should.equal(2);
-				// });
+				it('Then second competitor is notified twice of round starting', function(){
+					var competitorsNotifiedOfRoundstarting = 0,
+						mockCompetitor = {
+							matchStarted : function(){
+								competitorsNotifiedOfRoundstarting++;
+							},
+							win : function(){},
+							getMove : function(){}
+						};
+					new Game(rules)
+						.addCompetitor(new MockCompetitor([]))
+						.addCompetitor(mockCompetitor)
+						.addCompetitor(new MockCompetitor([]))
+						.startRound();
+					competitorsNotifiedOfRoundstarting.should.equal(2);
+				});
 			});
 		});
 	});
