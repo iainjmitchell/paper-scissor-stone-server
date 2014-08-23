@@ -19,5 +19,10 @@ describe('When a competitor is created', function(){
 });
 
 var Competitor = function(eventStore, competitorDetails){
-	eventStore.notify('newCompetitor', { name : competitorDetails.name});
+	
+	function init(){
+		eventStore.notify('newCompetitor', { name : competitorDetails.name});
+	}
+
+	init();
 };
