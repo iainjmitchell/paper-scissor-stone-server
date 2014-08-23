@@ -23,6 +23,21 @@ var MockBot = function(){
 	};
 };
 
+var FakeBot = function(moves){
+	this.startRound = function(){
+
+	};
+	this.startMatch = function(){
+
+	};
+	this.move = function(){
+		return moves.pop();
+	};
+	this.win = function(){
+
+	};
+};
+
 
 describe('When a competitor is created', function(){
 	it('Then a new competitor event is raised with name of competitor', function(){
@@ -57,15 +72,26 @@ describe('When a competitor is created', function(){
 				fakeEventStore.events['newRoundStarted'].number.should.equal(2);
 			});
 		});
-	});
 
-	describe('When a match is started', function(){
-		it('Then bot is informed of match start', function(done){
-			var mockBot = new MockBot();
-			mockBot.startMatch = done;
-			new Competitor(new FakeEventStore(), mockBot, {}).matchStarted();
+		describe('When a match is started', function(){
+			it('Then bot is informed of match start', function(done){
+				var mockBot = new MockBot();
+				mockBot.startMatch = done;
+				new Competitor(new FakeEventStore(), mockBot, {}).matchStarted();
+			});
+
+			describe('When a move is requested', function(){
+				it('Then the move of the bot is returned', function(){
+					var botMove = 'paper'+Math.random(),
+						fakeBot = new FakeBot([botMove]),
+						competitor = new Competitor(new FakeEventStore(), fakeBot, {});
+					competitor.getMove().should.equal(botMove);
+				});
+			});
 		});
 	});
+
+	
 });
 
 var Competitor = function(eventStore, bot, competitorDetails){
@@ -85,6 +111,7 @@ var Competitor = function(eventStore, bot, competitorDetails){
 	};
 
 	this.matchStarted = bot.startMatch;
+	this.getMove = bot.move;
 
 	init();
 };
