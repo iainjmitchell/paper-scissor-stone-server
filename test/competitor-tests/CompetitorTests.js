@@ -19,18 +19,26 @@ describe('When a competitor is created', function(){
 
 	//TODO email to gravitar hash
 
-	// describe('When a match is started with competitor', function(){
-		
-	// });
+	describe('When a round is started', function(){
+		it('Then a new round started event is raised with round number 1', function(){
+			var fakeEventStore = new FakeEventStore();
+			new Competitor(fakeEventStore, {})
+				.roundStarted();
+			fakeEventStore.events['newRoundStarted'].number.should.equal(1);
+		});
+	});
 });
 
 var Competitor = function(eventStore, competitorDetails){
 	var NEW_COMPETITOR_EVENT = 'newCompetitor';
 
-
 	function init(){
 		eventStore.notify(NEW_COMPETITOR_EVENT, { name : competitorDetails.name});
 	}
+
+	this.roundStarted = function(){
+		eventStore.notify('newRoundStarted', {number : 1});
+	};
 
 	init();
 };
