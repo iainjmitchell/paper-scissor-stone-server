@@ -12,6 +12,7 @@ var MockCompetitor = function(moves){
 		this.matchesWon++;
 	};
 	this.matchStarted = function(){};
+	this.roundStarted = function(){};
 };
 
 
@@ -40,12 +41,13 @@ describe('When a game of paper, scissors, stone is started', function(){
 
 	describe('And two competitors are registered who return no moves', function(){
 		describe('and round is started', function(){
-			it('Then both competitors are notified of round starting', function(){
+			it('Then both competitors are notified that a round has started', function(){
 				var competitorsNotifiedOfRoundstarting = 0,
 					mockCompetitor = {
-						matchStarted : function(){
+						roundStarted : function(){
 							competitorsNotifiedOfRoundstarting++;
 						},
+						matchStarted : function(){},
 						win : function(){},
 						getMove : function(){}
 					};
@@ -54,6 +56,23 @@ describe('When a game of paper, scissors, stone is started', function(){
 					.addCompetitor(mockCompetitor)
 					.startRound();
 				competitorsNotifiedOfRoundstarting.should.equal(2);
+			});
+
+			it('Then both competitors are notified of match starting', function(){
+				var competitorsNotifiedOfMatchstarting = 0,
+					mockCompetitor = {
+						roundStarted : function(){},
+						matchStarted : function(){
+							competitorsNotifiedOfMatchstarting++;
+						},
+						win : function(){},
+						getMove : function(){}
+					};
+				new Game(rules)
+					.addCompetitor(mockCompetitor)
+					.addCompetitor(mockCompetitor)
+					.startRound();
+				competitorsNotifiedOfMatchstarting.should.equal(2);
 			});
 
 			it('Then both competitors have 0 wins', function(){
@@ -177,12 +196,13 @@ describe('When a game of paper, scissors, stone is started', function(){
 		describe('And three competitors are registered', function(){
 			describe('who all return no moves', function(){
 				describe('and round is started', function(){
-					it('Then first competitor is notified twice of round starting', function(){
-						var competitorsNotifiedOfRoundstarting = 0,
+					it('Then first competitor is notified twice of match starting', function(){
+						var competitorsNotifiedOfMatchstarting = 0,
 							mockCompetitor = {
 								matchStarted : function(){
-									competitorsNotifiedOfRoundstarting++;
+									competitorsNotifiedOfMatchstarting++;
 								},
+								roundStarted : function(){},
 								win : function(){},
 								getMove : function(){}
 							};
@@ -191,15 +211,16 @@ describe('When a game of paper, scissors, stone is started', function(){
 							.addCompetitor(new MockCompetitor([]))
 							.addCompetitor(new MockCompetitor([]))
 							.startRound();
-						competitorsNotifiedOfRoundstarting.should.equal(2);
+						competitorsNotifiedOfMatchstarting.should.equal(2);
 					});
 
-					it('Then second competitor is notified twice of round starting', function(){
-						var competitorsNotifiedOfRoundstarting = 0,
+					it('Then second competitor is notified twice of match starting', function(){
+						var competitorsNotifiedOfMatchstarting = 0,
 							mockCompetitor = {
 								matchStarted : function(){
-									competitorsNotifiedOfRoundstarting++;
+									competitorsNotifiedOfMatchstarting++;
 								},
+								roundStarted : function(){},
 								win : function(){},
 								getMove : function(){}
 							};
@@ -208,7 +229,7 @@ describe('When a game of paper, scissors, stone is started', function(){
 							.addCompetitor(mockCompetitor)
 							.addCompetitor(new MockCompetitor([]))
 							.startRound();
-						competitorsNotifiedOfRoundstarting.should.equal(2);
+						competitorsNotifiedOfMatchstarting.should.equal(2);
 					});
 				});
 			});

@@ -16,6 +16,12 @@ describe('When a competitor is created', function(){
 		new Competitor(fakeEventStore, {name : competitorName});
 		fakeEventStore.events['newCompetitor'].name.should.equal(competitorName);
 	});
+
+	//TODO email to gravitar hash
+
+	// describe('When a match is started with competitor', function(){
+		
+	// });
 });
 
 var Competitor = function(eventStore, competitorDetails){

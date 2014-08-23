@@ -9,7 +9,12 @@ var Game = function(rules){
 		return this;
 	};
 
-	this.startRound = startRoundForNextCompetitor;
+	this.startRound = function(){
+		competitors.forEach(function(competitor){
+			competitor.roundStarted();
+		});
+		startRoundForNextCompetitor();
+	};
 
 	function startRoundForNextCompetitor(){
 		var competitor = competitors.pop();
