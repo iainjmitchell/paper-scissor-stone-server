@@ -174,40 +174,73 @@ describe('When a game of paper, scissors, stone is started', function(){
 			});
 		});
 
-		describe('And three competitors are registered who return no moves', function(){
-			describe('and round is started', function(){
-				it('Then first competitor is notified twice of round starting', function(){
-					var competitorsNotifiedOfRoundstarting = 0,
-						mockCompetitor = {
-							matchStarted : function(){
-								competitorsNotifiedOfRoundstarting++;
-							},
-							win : function(){},
-							getMove : function(){}
-						};
-					new Game(rules)
-						.addCompetitor(mockCompetitor)
-						.addCompetitor(new MockCompetitor([]))
-						.addCompetitor(new MockCompetitor([]))
-						.startRound();
-					competitorsNotifiedOfRoundstarting.should.equal(2);
-				});
+		describe('And three competitors are registered', function(){
+			describe('who all return no moves', function(){
+				describe('and round is started', function(){
+					it('Then first competitor is notified twice of round starting', function(){
+						var competitorsNotifiedOfRoundstarting = 0,
+							mockCompetitor = {
+								matchStarted : function(){
+									competitorsNotifiedOfRoundstarting++;
+								},
+								win : function(){},
+								getMove : function(){}
+							};
+						new Game(rules)
+							.addCompetitor(mockCompetitor)
+							.addCompetitor(new MockCompetitor([]))
+							.addCompetitor(new MockCompetitor([]))
+							.startRound();
+						competitorsNotifiedOfRoundstarting.should.equal(2);
+					});
 
-				it('Then second competitor is notified twice of round starting', function(){
-					var competitorsNotifiedOfRoundstarting = 0,
-						mockCompetitor = {
-							matchStarted : function(){
-								competitorsNotifiedOfRoundstarting++;
-							},
-							win : function(){},
-							getMove : function(){}
-						};
-					new Game(rules)
-						.addCompetitor(new MockCompetitor([]))
-						.addCompetitor(mockCompetitor)
-						.addCompetitor(new MockCompetitor([]))
-						.startRound();
-					competitorsNotifiedOfRoundstarting.should.equal(2);
+					it('Then second competitor is notified twice of round starting', function(){
+						var competitorsNotifiedOfRoundstarting = 0,
+							mockCompetitor = {
+								matchStarted : function(){
+									competitorsNotifiedOfRoundstarting++;
+								},
+								win : function(){},
+								getMove : function(){}
+							};
+						new Game(rules)
+							.addCompetitor(new MockCompetitor([]))
+							.addCompetitor(mockCompetitor)
+							.addCompetitor(new MockCompetitor([]))
+							.startRound();
+						competitorsNotifiedOfRoundstarting.should.equal(2);
+					});
+				});
+			});
+			describe('One of whoem always returns stone', function(){
+				var competitorAlwaysStone = new MockCompetitor(alwaysStone);
+
+				describe('One of whoem always returns paper', function(){
+					var competitorAlwaysPaper = new MockCompetitor(alwaysPaper);
+
+					describe('One of whoem always returns scissors', function(){
+						var competitorAlwaysScissors = new MockCompetitor(alwaysScissors);
+
+						describe('And round is started', function(){
+							new Game(rules)
+								.addCompetitor(competitorAlwaysStone)
+								.addCompetitor(competitorAlwaysScissors)
+								.addCompetitor(competitorAlwaysPaper)
+								.startRound();
+
+							it('Then stone competitor has one win', function(){
+								competitorAlwaysStone.matchesWon.should.equal(1);
+							});
+
+							it('Then paper competitor has one win', function(){
+								competitorAlwaysPaper.matchesWon.should.equal(1);
+							});
+
+							it('Then scissors competitor has one win', function(){
+								competitorAlwaysScissors.matchesWon.should.equal(1);
+							});
+						});
+					});
 				});
 			});
 		});
