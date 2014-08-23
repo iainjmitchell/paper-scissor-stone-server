@@ -114,6 +114,15 @@ describe('When a competitor is created', function(){
 						.win();
 					fakeEventStore.events['score'].round.should.equal(2);
 				});
+
+				it('Then an event is raised stating that total score is 2', function(){
+					var fakeEventStore = new FakeEventStore();
+					new Competitor(fakeEventStore, new MockBot(), {})
+						.roundStarted()
+						.win()
+						.win();
+					fakeEventStore.events['score'].total.should.equal(2);
+				});
 			});
 		});
 	});
