@@ -149,8 +149,14 @@ var Competitor = function(eventStore, bot, competitorDetails){
 		return this;
 	};
 
-	this.matchStarted = bot.startMatch;
-	this.getMove = bot.move;
+	this.matchStarted = function(){
+		bot.startMatch();
+		return this;
+	};
+	
+	this.getMove = function(){
+		return bot.move();
+	};
 
 	this.win = function(){
 		score++;
