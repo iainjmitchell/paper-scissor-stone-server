@@ -96,6 +96,16 @@ describe('When a competitor is created', function(){
 					.win();
 				fakeEventStore.events['score'].round.should.equal(1);
 			});
+			describe('And another win is recorded', function(){
+				it('Then an event is raised stating a score of round is 2', function(){
+					var fakeEventStore = new FakeEventStore();
+					new Competitor(fakeEventStore, new MockBot(), {})
+						.roundStarted()
+						.win()
+						.win();
+					fakeEventStore.events['score'].round.should.equal(2);
+				});
+			});
 		});
 	});
 
@@ -122,7 +132,8 @@ describe('When a competitor is created', function(){
 var Competitor = function(eventStore, bot, competitorDetails){
 	var NEW_COMPETITOR_EVENT = 'newCompetitor',
 		NEW_ROUND_EVENT = 'newRoundStarted',
-		numberOfRounds = 0;
+		numberOfRounds = 0,
+		score = 0;
 
 	function init(){
 		eventStore.notify(NEW_COMPETITOR_EVENT, { 
@@ -142,7 +153,9 @@ var Competitor = function(eventStore, bot, competitorDetails){
 	this.getMove = bot.move;
 
 	this.win = function(){
-		eventStore.notify('score', { id : competitorDetails.id, round : 1 });
+		score++;
+		eventStore.notify('score', { id : competitorDetails.id, round : score });
+		return this;
 	};
 
 	init();
