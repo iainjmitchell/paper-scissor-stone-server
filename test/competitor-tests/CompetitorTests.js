@@ -38,13 +38,19 @@ var FakeBot = function(moves){
 	};
 };
 
-
 describe('When a competitor is created', function(){
 	it('Then a new competitor event is raised with name of competitor', function(){
 		var competitorName = 'a Name ' + Math.random(),
 			fakeEventStore = new FakeEventStore();
 		new Competitor(fakeEventStore, new MockBot(), {name : competitorName});
 		fakeEventStore.events['newCompetitor'].name.should.equal(competitorName);
+	});
+
+	it('Then a new competitor event is raised with id of competitor', function(){
+		var competitorId = Math.random(),
+			fakeEventStore = new FakeEventStore();
+		new Competitor(fakeEventStore, new MockBot(), {id : competitorId});
+		fakeEventStore.events['newCompetitor'].id.should.equal(competitorId);
 	});
 
 	//TODO email to gravitar hash
@@ -73,21 +79,31 @@ describe('When a competitor is created', function(){
 			});
 		});
 
-		describe('When a match is started', function(){
-			it('Then bot is informed of match start', function(done){
-				var mockBot = new MockBot();
-				mockBot.startMatch = done;
-				new Competitor(new FakeEventStore(), mockBot, {}).matchStarted();
+		describe('And a win is recorded', function(){
+			it('Then an event is raised stating a score has been registered for competitor by id', function(){
+				var competitorId = Math.random(),
+					fakeEventStore = new FakeEventStore();
+				new Competitor(fakeEventStore, new MockBot(), {id : competitorId})
+					.win();
+				fakeEventStore.events['score'].id.should.equal(competitorId);
 			});
+		});
+	});
 
-			describe('When a move is requested', function(){
-				it('Then the move of the bot is returned', function(){
-					var botMove = 'paper'+Math.random(),
-						fakeBot = new FakeBot([botMove]),
-						competitor = new Competitor(new FakeEventStore(), fakeBot, {});
-					competitor.getMove().should.equal(botMove);
-				});
-			});
+	describe('When a match is started', function(){
+		it('Then bot is informed of match start', function(done){
+			var mockBot = new MockBot();
+			mockBot.startMatch = done;
+			new Competitor(new FakeEventStore(), mockBot, {}).matchStarted();
+		});
+	});
+
+	describe('When a move is requested', function(){
+		it('Then the move of the bot is returned', function(){
+			var botMove = 'paper'+Math.random(),
+				fakeBot = new FakeBot([botMove]),
+				competitor = new Competitor(new FakeEventStore(), fakeBot, {});
+			competitor.getMove().should.equal(botMove);
 		});
 	});
 
@@ -100,7 +116,10 @@ var Competitor = function(eventStore, bot, competitorDetails){
 		numberOfRounds = 0;
 
 	function init(){
-		eventStore.notify(NEW_COMPETITOR_EVENT, { name : competitorDetails.name});
+		eventStore.notify(NEW_COMPETITOR_EVENT, { 
+			id : competitorDetails.id,
+			name : competitorDetails.name
+		});
 	}
 
 	this.roundStarted = function(){
@@ -112,6 +131,10 @@ var Competitor = function(eventStore, bot, competitorDetails){
 
 	this.matchStarted = bot.startMatch;
 	this.getMove = bot.move;
+
+	this.win = function(){
+		eventStore.notify('score', { id : competitorDetails.id });
+	};
 
 	init();
 };
