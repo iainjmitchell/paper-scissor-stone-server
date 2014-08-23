@@ -132,14 +132,16 @@ describe('When a competitor is created', function(){
 var Competitor = function(eventStore, bot, competitorDetails){
 	var NEW_COMPETITOR_EVENT = 'newCompetitor',
 		NEW_ROUND_EVENT = 'newRoundStarted',
+		SCORE_EVENT = 'score',
 		numberOfRounds = 0,
 		score = 0;
 
 	function init(){
-		eventStore.notify(NEW_COMPETITOR_EVENT, { 
+		var eventDetails = {
 			id : competitorDetails.id,
 			name : competitorDetails.name
-		});
+		};
+		eventStore.notify(NEW_COMPETITOR_EVENT, eventDetails);
 	}
 
 	this.roundStarted = function(){
@@ -154,13 +156,15 @@ var Competitor = function(eventStore, bot, competitorDetails){
 		return this;
 	};
 	
-	this.getMove = function(){
-		return bot.move();
-	};
+	this.getMove = bot.move;
 
 	this.win = function(){
 		score++;
-		eventStore.notify('score', { id : competitorDetails.id, round : score });
+		var eventDetails = {
+			id : competitorDetails.id, 
+			round : score
+		};
+		eventStore.notify(SCORE_EVENT, eventDetails);
 		return this;
 	};
 
