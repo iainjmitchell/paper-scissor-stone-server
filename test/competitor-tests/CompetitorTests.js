@@ -1,3 +1,4 @@
+var Competitor = require('../../src/competitor/Competitor');
 require('chai').should();
 
 var FakeEventStore = function(){
@@ -105,6 +106,14 @@ describe('When a competitor is created', function(){
 				fakeEventStore.events['score'].total.should.equal(1);
 			});
 
+			it('Then the bot is informed of the win', function(done){
+				var mockBot = new MockBot();
+				mockBot.win = done;
+				new Competitor(new FakeEventStore(), mockBot, {})
+					.roundStarted()
+					.win();	
+			});
+
 			describe('And another win is recorded', function(){
 				it('Then an event is raised stating a score of round is 2', function(){
 					var fakeEventStore = new FakeEventStore();
@@ -169,62 +178,4 @@ describe('When a competitor is created', function(){
 			competitor.getMove().should.equal(botMove);
 		});
 	});
-
-	
 });
-
-var CompetitorScore = function(eventStore, competitorId){
-	var SCORE_EVENT = 'score',
-		score = {
-			id : competitorId,
-			total : 0,
-			round : 0
-		};
-
-	this.increment = function(){
-		score.total++;
-		score.round++;
-		eventStore.notify(SCORE_EVENT, score);
-	};
-
-	this.newRound = function(){
-		score.round = 0;
-	};
-};
-
-var Competitor = function(eventStore, bot, competitorDetails){
-	var NEW_COMPETITOR_EVENT = 'newCompetitor',
-		NEW_ROUND_EVENT = 'newRoundStarted',
-		numberOfRounds = 0,
-		competitorScore = new CompetitorScore(eventStore, competitorDetails.id);
-
-	function init(){
-		var eventDetails = {
-			id : competitorDetails.id,
-			name : competitorDetails.name
-		};
-		eventStore.notify(NEW_COMPETITOR_EVENT, eventDetails);
-	}
-
-	this.roundStarted = function(){
-		numberOfRounds++;
-		competitorScore.newRound();
-		bot.startRound();
-		eventStore.notify(NEW_ROUND_EVENT, {number : numberOfRounds});
-		return this;
-	};
-
-	this.matchStarted = function(){
-		bot.startMatch();
-		return this;
-	};
-	
-	this.getMove = bot.move;
-
-	this.win = function(){
-		competitorScore.increment();
-		return this;
-	};
-
-	init();
-};
