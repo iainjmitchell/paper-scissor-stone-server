@@ -1,26 +1,19 @@
-var MatchFactory = require('./MatchFactory');
+var CompetitorMatchesFactory = require('./CompetitorMatchesFactory');
 
 var Game = function(rules){
 	var competitors = [],
-		matchFactory = new MatchFactory(rules);
+		competitorMatchesFactory = new CompetitorMatchesFactory(rules, startRoundForNextCompetitor);
 
 	this.addCompetitor = function(competitor){
 		competitors.push(competitor);
 		return this;
 	};
-	this.startRound = function(){
+
+	this.startRound = startRoundForNextCompetitor;
+
+	function startRoundForNextCompetitor(){
 		var competitor = competitors.pop();
-		playMatches(competitor, competitors);
-		if (competitors.length !== 0){
-			this.startRound();
-		}
-	};
-	function playMatches(competitor, opponents){
-		var count = 0;
-		for (count; count < opponents.length; count++){
-			var opponent = opponents[count];
-			matchFactory.create(competitor, opponent).start();
-		}
+		competitorMatchesFactory.create(competitor, competitors).play();
 	}
 };
 
