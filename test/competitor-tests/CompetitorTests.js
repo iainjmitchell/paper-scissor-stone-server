@@ -1,4 +1,6 @@
 var Competitor = require('../../src/competitor/Competitor');
+var HijackDI = require('hijackdi'),
+	hijackdi = new HijackDI('../../../src/competitor/Competitor');
 require('chai').should();
 
 var FakeEventStore = function(){
@@ -54,7 +56,24 @@ describe('When a competitor is created', function(){
 		fakeEventStore.events['newCompetitor'].id.should.equal(competitorId);
 	});
 
-	//TODO email to gravitar hash
+	it('Then a new competitor event is raised with the generated gravitar uri', function(){
+		var gravatarUri = 'http://'+ Math.random(),
+			email = 'anEmail',
+			fakeEventStore = new FakeEventStore();
+			stubs = {
+				'gravatar' : {
+					url : function(gravatarEmail){
+						if (gravatarEmail === email){
+							return gravatarUri;
+						}
+					}
+				}
+			};
+		hijackdi.sandbox(stubs, function(Competitor){
+			new Competitor(fakeEventStore, new MockBot(), {email : email});
+		});
+		fakeEventStore.events['newCompetitor'].gravatarUri.should.equal(gravatarUri);
+	});
 
 	describe('When a round is started', function(){
 		it('Then a new round started event is raised with id of competitor', function(){

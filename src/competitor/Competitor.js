@@ -1,4 +1,5 @@
-var CompetitorScore = require('./CompetitorScore');
+var CompetitorScore = require('./CompetitorScore'),
+	Gravatar = require('gravatar');
 
 var Competitor = function(eventStore, bot, competitorDetails){
 	var NEW_COMPETITOR_EVENT = 'newCompetitor',
@@ -12,7 +13,8 @@ var Competitor = function(eventStore, bot, competitorDetails){
 	function init(){
 		var eventDetails = {
 			id : competitorDetails.id,
-			name : competitorDetails.name
+			name : competitorDetails.name,
+			gravatarUri : Gravatar.url(competitorDetails.email || '')
 		};
 		eventStore.notify(NEW_COMPETITOR_EVENT, eventDetails);
 	}
