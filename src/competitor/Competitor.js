@@ -4,6 +4,10 @@ var Competitor = function(eventStore, bot, competitorDetails){
 	var NEW_COMPETITOR_EVENT = 'newCompetitor',
 		NEW_ROUND_EVENT = 'newRoundStarted',
 		numberOfRounds = 0,
+		round = {
+			id : competitorDetails.id,
+			number : 0
+		},
 		competitorScore = new CompetitorScore(eventStore, competitorDetails.id);
 
 	function init(){
@@ -15,14 +19,14 @@ var Competitor = function(eventStore, bot, competitorDetails){
 	}
 
 	this.roundStarted = function(){
-		numberOfRounds++;
+		round.number++;
 		var eventDetails = {
 			id: competitorDetails.id, 
 			number : numberOfRounds
 		};
 		competitorScore.newRound();
 		bot.startRound();
-		eventStore.notify(NEW_ROUND_EVENT, eventDetails);
+		eventStore.notify(NEW_ROUND_EVENT, round);
 		return this;
 	};
 
