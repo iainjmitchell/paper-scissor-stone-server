@@ -16,9 +16,13 @@ var Competitor = function(eventStore, bot, competitorDetails){
 
 	this.roundStarted = function(){
 		numberOfRounds++;
+		var eventDetails = {
+			id: competitorDetails.id, 
+			number : numberOfRounds
+		};
 		competitorScore.newRound();
 		bot.startRound();
-		eventStore.notify(NEW_ROUND_EVENT, {id: competitorDetails.id, number : numberOfRounds});
+		eventStore.notify(NEW_ROUND_EVENT, eventDetails);
 		return this;
 	};
 
