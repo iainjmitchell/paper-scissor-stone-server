@@ -57,6 +57,14 @@ describe('When a competitor is created', function(){
 	//TODO email to gravitar hash
 
 	describe('When a round is started', function(){
+		it('Then a new round started event is raised with id of competitor', function(){
+			var competitorId = Math.random(),
+				fakeEventStore = new FakeEventStore();
+			new Competitor(fakeEventStore, new MockBot(), {id: competitorId})
+				.roundStarted();
+			fakeEventStore.events['newRoundStarted'].id.should.equal(competitorId);
+		});
+
 		it('Then a new round started event is raised with round number 1', function(){
 			var fakeEventStore = new FakeEventStore();
 			new Competitor(fakeEventStore, new MockBot(), {})
