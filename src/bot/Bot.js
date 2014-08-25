@@ -18,7 +18,8 @@ var Bot = function(uri){
 	};
 
 	this.move = function(){
-		httpsync.get(GET_MOVE_REQUEST);
+		var response = httpsync.get(GET_MOVE_REQUEST).end();
+		return response.data.toString();
 	};
 
 	this.win = function(){

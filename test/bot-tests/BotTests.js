@@ -7,9 +7,22 @@ var MockHttp = function(){
 	this.gets = [];
 	this.get = function(data){
 		this.gets.push(data);
+		return new FakeResponse();
 	};
 	this.request = function(data){
 		this.requests.push(data);
+	};
+};
+
+var FakeResponse = function(value){
+	this.end = function(){
+		return {
+			data : {
+				toString : function(){
+					return value;
+				}
+			}
+		};
 	};
 };
 
@@ -107,6 +120,23 @@ describe('When bot is created at uri', function(){
 				new Bot(botUri).move();
 			});
 			mockHttp.gets[0].url.should.equal(botUri + '/move');
+		});
+
+		it('Then a get is retrieved from bot', function(){
+			var move = 'Paper'+Math.random(),
+				mockHttp = new MockHttp(),
+				mocks = {
+					'httpsync' : {
+						get : function(){
+							return new FakeResponse(move);
+						}
+					}
+				};
+
+			hijackDI.sandbox(mocks, function(Bot){
+				var response = new Bot('').move();
+				response.should.equal(move);
+			});
 		});
 	});
 });
