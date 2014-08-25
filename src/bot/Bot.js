@@ -4,17 +4,21 @@ var httpsync = require('httpsync');
 // console.log(res.data.toString());
 
 var Bot = function(uri){
-	var START_ROUND_REQUEST = { url : uri + '/round', method : 'POST' }; 
+	var START_ROUND_REQUEST = { url : uri + '/round', method : 'POST' },
+		START_MATCH_REQUEST = { url : uri + '/match', method : 'POST' };  
 
 	this.startRound = function(){
 		httpsync.request(START_ROUND_REQUEST);
 	};
-	this.startMatch = function(){
 
+	this.startMatch = function(){
+		httpsync.request(START_MATCH_REQUEST);
 	};
+
 	this.move = function(){
 
 	};
+	
 	this.win = function(){
 
 	};
