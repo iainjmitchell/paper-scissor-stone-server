@@ -94,4 +94,19 @@ describe('When bot is created at uri', function(){
 			mockHttp.requests[0].method.should.equal('POST');
 		});
 	});
+
+	describe('And a move is requested', function(){
+		it('Then a get is sent bot uri for a move', function(){
+			var botUri = 'http://' + Math.random(),
+				mockHttp = new MockHttp(),
+				mocks = {
+					'httpsync' : mockHttp
+				};
+
+			hijackDI.sandbox(mocks, function(Bot){
+				new Bot(botUri).move();
+			});
+			mockHttp.gets[0].url.should.equal(botUri + '/move');
+		});
+	});
 });

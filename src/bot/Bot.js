@@ -6,7 +6,8 @@ var httpsync = require('httpsync');
 var Bot = function(uri){
 	var START_ROUND_REQUEST = { url : uri + '/round', method : 'POST' },
 		START_MATCH_REQUEST = { url : uri + '/match', method : 'POST' },
-		WIN_MATCH_REQUEST = { url : uri + '/win', method : 'POST' };  
+		WIN_MATCH_REQUEST = { url : uri + '/win', method : 'POST' },
+		GET_MOVE_REQUEST = { url : uri + '/move' };  
 
 	this.startRound = function(){
 		httpsync.request(START_ROUND_REQUEST);
@@ -17,7 +18,7 @@ var Bot = function(uri){
 	};
 
 	this.move = function(){
-
+		httpsync.get(GET_MOVE_REQUEST);
 	};
 
 	this.win = function(){
