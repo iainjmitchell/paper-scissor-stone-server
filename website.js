@@ -5,6 +5,11 @@ var website = express();
 var fakeGame = {
 	addCompetitors : function(){}
 };
+var Game = require('./src/game/Game');
+var EventStore = require('./src/infrastructure/EventStore');
+var rules = require('./data/rules.json');
+var eventStore = new EventStore();
+var game = new Game(rules);
 
 website.set('port', process.env.PORT || 3000);
 website.set('views', path.join(__dirname, 'views'));
@@ -23,8 +28,7 @@ if ('development' == website.get('env')) {
   website.use(express.errorHandler());
 }
 
-
-require('./src/routing')(website, fakeGame);
+require('./src/routing')(website, game, eventStore);
 
 http.createServer(website).listen(website.get('port'), function(){
   console.log('Express server listening on port ' + website.get('port'));

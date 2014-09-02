@@ -1,8 +1,13 @@
-var BotController = function(game){
-	var botValidator = new BotValidator();
+var CompetitorFactory = require('../competitor/CompetitorFactory');
+
+var BotController = function(game, eventStore){
+	var botValidator = new BotValidator(),
+		competitorFactory = new CompetitorFactory(eventStore);
 
 	this.add = function(request, response){
 		var bot = request.body;
+		competitorFactory.create(bot);
+
 		if (botValidator.validate(bot)){
 			game.addCompetitor(bot);
 			response.send(200);
