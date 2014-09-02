@@ -4,3 +4,5 @@ var EventStore = function(){
 		console.log(event);
 	};
 };
+
+module.exports = EventStore;

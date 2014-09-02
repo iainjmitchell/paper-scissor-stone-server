@@ -1,6 +1,6 @@
 var BotController = require('../controller/BotController');
 
-module.exports = function(website, game){
-	var controller = new BotController(game);
-	website.get('/Bot', controller.get);
+module.exports = function(website, game, eventStore){
+	var controller = new BotController(game, eventStore);
+	website.put('/Bot', controller.add);
 };
