@@ -6,7 +6,8 @@ var BotController = function(game, eventStore){
 
 	this.add = function(request, response){
 		var bot = request.body;
-		
+		console.log(bot);
+
 		if (botValidator.validate(bot)){
 			var competitor = competitorFactory.create(bot);
 			game.addCompetitor(competitor);
