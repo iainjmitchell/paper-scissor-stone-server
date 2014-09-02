@@ -96,6 +96,26 @@ describe('Bot Controller Tests', function(){
 				});
 				mockCompetitorFactory.bot.should.equal(bot);
 			});
+
+			it('Then created competitor is added to game', function(){
+				var fakeCompetitor = {},
+					mockGame = new MockGame(),
+					stubs = {
+						'../../../src/competitor/CompetitorFactory' : function(){
+							return {
+								create : function(){
+									return fakeCompetitor;
+								}
+							};
+						}
+					};
+
+				hijackDI.sandbox(stubs, function(BotController){
+					var botController = new BotController(mockGame,fakeEventStore);
+					botController.add({body : bot}, {send: function(){}});
+				});
+				mockGame.added.should.eql([fakeCompetitor]);
+			});
 		});
 	});
 });
