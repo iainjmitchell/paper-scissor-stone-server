@@ -1,0 +1,11 @@
+{
+	"paper" : { 
+		"beats" : ["stone"] 
+	},
+	"stone" : { 
+		"beats" : ["scissors"]
+	},
+	"scissors": { 
+		"beats" : ["paper"]
+	}
+};
