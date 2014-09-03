@@ -35,12 +35,28 @@
 	};
 
 	var Competitors = function(element, eventStore){
-		$(element).append($('<ul>'));
-		var competitorsList = $(element).find('ul');
-		
-		var competitorElementTemplate = '<li><div><img><span class="name"></span></div></li>';
+		var competitorsList,
+			competitorElementFactory = new CompetitorElementFactory();
+			
 
-		eventStore.on('newCompetitor', function(competitor){
+		function init(){
+			$(element).append($('<ul>'));
+			competitorsList = $(element).find('ul');
+			eventStore.on('newCompetitor', add);
+		}
+
+		function add(competitor){
+			var competitorElement = competitorElementFactory.create(competitor);
+			competitorsList.append(competitorElement);
+		}
+
+		init();
+	};
+
+	var CompetitorElementFactory = function(){
+		var competitorElementTemplate = '<li><div><img><span class="name"></span></div></li>';
+		
+		this.create = function(competitor){
 			var competitorElement = $(competitorElementTemplate);
 			competitorElement
 				.find('div')
@@ -51,7 +67,7 @@
 					.end()
 				.find('img')
 					.prop('src', competitor.gravatarUri);
-			competitorsList.append(competitorElement);
-		});
+			return competitorElement;
+		};
 	};
 })(jQuery);
