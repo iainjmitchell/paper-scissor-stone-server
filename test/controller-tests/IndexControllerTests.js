@@ -1,7 +1,8 @@
+var EventStore = require('../../src/infrastructure/EventStore');
 require('chai').should();
 
-var fakeEventStore = {
-	notify : function(){}
+var fakeIO = {
+	emit : function(){}
 };
 
 var MockResponse = function(){
@@ -16,21 +17,42 @@ var fakeRequest = {};
 describe('Given that user loads the index page', function(){
 	it('Then the index page is displayed', function(){
 		var mockResponse = new MockResponse();
-		new IndexController().get(fakeRequest, mockResponse);
+		new IndexController(new EventStore(fakeIO)).get(fakeRequest, mockResponse);
 		mockResponse.page.should.equal('index');
 	});
 
 	describe('When game has not started', function(){
 		it('Then no competitors are returned', function(){
 			var mockResponse = new MockResponse();
-			new IndexController().get(fakeRequest, mockResponse);
+			new IndexController(new EventStore(fakeIO)).get(fakeRequest, mockResponse);
 			mockResponse.model.competitors.length.should.equal(0);
+		});
+	});
+
+	describe('When game has started', function(){
+		describe('And one competitor has been registered', function(){
+			it('Then competitor is returned', function(){
+				var mockResponse = new MockResponse(),
+					competitor = {},
+					eventStore = new EventStore(fakeIO);
+				var indexController = new IndexController(eventStore);
+				eventStore.notify('newCompetitor', competitor);
+				indexController.get(fakeRequest, mockResponse);
+				mockResponse.model.competitors[0].should.equal(competitor);
+			});
 		});
 	});
 });
 
-var IndexController = function(){
+var IndexController = function(eventStore){
+	var competitors = [];
+	eventStore.on('newCompetitor', function(competitor){
+		competitors.push(competitor);
+	});
+
 	this.get = function(request, response){
-		response.render('index');
+		response.render('index', {
+			competitors : competitors
+		});
 	};
 };
