@@ -1,12 +1,6 @@
-var IndexController = function(){
-	this.get = function(request, response){
-		response.render('index', {
-			title : 'Paper Scissor Stone tournament'
-		});
-	};
-};
+var IndexController = require('../controller/IndexController');
 
 module.exports = function(website, game, eventStore){
-	var controller = new IndexController(website, game, eventStore);
+	var controller = new IndexController(eventStore);
 	website.get('/', controller.get);
 };

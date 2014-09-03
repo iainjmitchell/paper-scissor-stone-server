@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Paper Scissors Stone Server</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-
-
-    <div id="bots">
-
+    <p>Paper Scissors Stone</p>
+    <div id="competitors">
+      <ul>
+        <% for(var i=0; i<competitors.length; i++) {%>
+           <li><%= competitors[i].name %></li>
+        <% } %>
+      </ul>
     </div>
     <script>
       var socket = io('http://localhost:3000'),
-          botsElement = $(bots);
+          competitors = $('#competitors ul');
       socket.on('newCompetitor', function (data) {
-        var bot = $('<div>').text(data.name);
-        botsElement.append(bot);
+        var competitor = $('<li>').text(data.name);
+        competitors.append(competitor);
       });
     </script>
   </body>

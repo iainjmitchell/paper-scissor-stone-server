@@ -1,9 +1,9 @@
 var gulp = require('gulp'),
 	mocha = require('gulp-mocha'),
-	git = require('gulp-git');
-	// qunit = require('gulp-qunit');
+	git = require('gulp-git'),
+	qunit = require('gulp-qunit');
 
-gulp.task('test', function () {
+gulp.task('test', ['public-test'], function () {
 	var mochaRun = mocha({
 			reporter: 'nyan',
 			ui: 'bdd'
@@ -14,10 +14,10 @@ gulp.task('test', function () {
 		.pipe(mochaRun);
 });
 
-// gulp.task('public-test', function() {
-//     return gulp.src('./public-test/**/*.html')
-//         .pipe(qunit());
-// });
+gulp.task('public-test', function() {
+    return gulp.src('./public-test/**/*.html')
+        .pipe(qunit());
+});
 
 gulp.task('push', ['test'], function(){
 	var commitMessage = gulp.env.m || 'refactoring Yo!';
