@@ -65,6 +65,8 @@ describe('Bot Controller Tests', function(){
 			});
 		});
 
+		
+
 		describe('has a name and a uri', function(){
 			var bot = {
 					name : 'helloWorld2' + Math.random(),
@@ -115,6 +117,32 @@ describe('Bot Controller Tests', function(){
 					botController.add({body : bot}, {send: function(){}});
 				});
 				mockGame.added.should.eql([fakeCompetitor]);
+			});
+
+			describe('and is added twice', function(){
+				it('Then second bot is rejected with 422 (Unprocessable)', function(done){
+					var count = 0,
+						mockResponse = {
+							send : function(statusCode){
+								count++;
+								if (count === 2){
+									statusCode.should.equal(422);
+									done();
+								}
+							}
+						},
+						botController = new BotController(new MockGame(), fakeEventStore);
+					botController.add({body : bot}, mockResponse);
+					botController.add({body : bot}, mockResponse);
+				});
+
+				it('Then second bot is not added to competitors', function(){
+					var mockGame = new MockGame(),
+						botController = new BotController(mockGame, fakeEventStore);	
+					botController.add({body : bot}, {send: function(){}});
+					botController.add({body : bot}, {send: function(){}});
+					mockGame.added.length.should.equal(1);
+				});
 			});
 		});
 	});

@@ -4,6 +4,7 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
   </head>
   <body>
     <h1><%= title %></h1>
@@ -14,9 +15,11 @@
 
     </div>
     <script>
-      var socket = io('http://localhost:3000');
+      var socket = io('http://localhost:3000'),
+          botsElement = $(bots);
       socket.on('newCompetitor', function (data) {
-        console.log(data);
+        var bot = $('<div>').text(data.name);
+        botsElement.append(bot);
       });
     </script>
   </body>

@@ -6,7 +6,6 @@ var BotController = function(game, eventStore){
 
 	this.add = function(request, response){
 		var bot = request.body;
-		console.log(bot);
 
 		if (botValidator.validate(bot)){
 			var competitor = competitorFactory.create(bot);
@@ -20,8 +19,13 @@ var BotController = function(game, eventStore){
 };
 
 var BotValidator = function(){
+	var addedBots = [];
 	this.validate = function(bot){
-		return (!!bot.name && !!bot.uri);
+		if (addedBots.indexOf(bot.name) === -1){
+			addedBots.push(bot.name);
+			return (!!bot.name && !!bot.uri);
+		}
+		return false;
 	};
 };
 
