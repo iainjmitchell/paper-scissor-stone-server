@@ -20,11 +20,13 @@ describe('Given that user loads the index page', function(){
 		mockResponse.page.should.equal('index');
 	});
 
-	// describe('When game has not started', function(){
-	// 	it('Then no competitors are returned', function(){
-
-	// 	});
-	// });
+	describe('When game has not started', function(){
+		it('Then no competitors are returned', function(){
+			var mockResponse = new MockResponse();
+			new IndexController().get(fakeRequest, mockResponse);
+			mockResponse.model.competitors.length.should.equal(0);
+		});
+	});
 });
 
 var IndexController = function(){
