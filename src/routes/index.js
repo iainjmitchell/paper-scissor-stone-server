@@ -6,7 +6,7 @@ var IndexController = function(){
 	};
 };
 
-module.exports = function(website){
-	var controller = new IndexController();
+module.exports = function(website, game, eventStore){
+	var controller = new IndexController(website, game, eventStore);
 	website.get('/', controller.get);
 };
