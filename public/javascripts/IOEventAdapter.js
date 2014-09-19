@@ -1,6 +1,7 @@
 (function(module, io, undefined){
 	module.IOEventAdapter = function(events, eventStore){
 		var socket = io(document.URL);
+		console.log(document.URL);
 
 		function init(){
 			var count = 0;
