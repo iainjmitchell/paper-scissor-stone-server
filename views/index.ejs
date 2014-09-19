@@ -2,26 +2,27 @@
 <html>
   <head>
     <title>Paper Scissors Stone Server</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />   
   </head>
   <body>
     <p>Paper Scissors Stone</p>
     <div id="competitors">
-      <ul>
-        <% for(var i=0; i<competitors.length; i++) {%>
-           <li><%= competitors[i].name %></li>
-        <% } %>
-      </ul>
     </div>
+    <script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="javascripts/EventStore.js"></script>
+    <script src="javascripts/IOEventAdapter.js"></script>
+    <script src="javascripts/jquery-competitors.js"></script>
     <script>
-      var socket = io('http://localhost:3000'),
-          competitors = $('#competitors ul');
-      socket.on('newCompetitor', function (data) {
-        var competitor = $('<li>').text(data.name);
-        competitors.append(competitor);
-      });
+      var eventStore = new EventStore();
+      var events = ['newCompetitor'];
+      var eventAdapter = new IOEventAdapter(events, eventStore);
+      var currentCompetitors = <%- JSON.stringify(competitors) %>;
+
+      $('#competitors').competitors(eventStore);
+      for(var count = 0; count < currentCompetitors.length; count++){
+        eventStore.notify('newCompetitor', currentCompetitors[count]);
+      }
     </script>
   </body>
 </html>

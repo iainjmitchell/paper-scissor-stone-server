@@ -28,7 +28,25 @@ describe('Bot Controller Tests', function(){
 		describe('missing a name', function(){
 			it('Then bot is rejected with 422 (Unprocessable)', function(done){
 				var bot = {
-						uri : 'http://bob.com'
+						uri : 'http://bob.com',
+						email : 'bob@bob.com'
+					},
+					mockResponse = {
+						send : function(statusCode){
+							statusCode.should.equal(422);
+							done();
+						}
+					},
+					botController = new BotController(new MockGame(), fakeEventStore);
+				botController.add({body : bot}, mockResponse);
+			});
+		});
+
+		describe('missing a email', function(){
+			it('Then bot is rejected with 422 (Unprocessable)', function(done){
+				var bot = {
+						uri : 'http://bob.com',
+						name : 'bob'
 					},
 					mockResponse = {
 						send : function(statusCode){
@@ -43,7 +61,8 @@ describe('Bot Controller Tests', function(){
 
 		describe('missing a uri', function(){
 			var bot = {
-					name : 'helloWorld'
+					name : 'helloWorld',
+					email : 'bob@bob.com'
 				};
 
 			it('Then bot is rejected with 422 (Unprocessable)', function(done){
@@ -67,10 +86,11 @@ describe('Bot Controller Tests', function(){
 
 		
 
-		describe('has a name and a uri', function(){
+		describe('has a name, uri and email', function(){
 			var bot = {
 					name : 'helloWorld2' + Math.random(),
-					uri: 'http://aUri/' + Math.random() 
+					uri: 'http://aUri/' + Math.random(),
+					email :'bob@bob.com'
 				};
 
 			it('Then bot is NOT rejected', function(done){

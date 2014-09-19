@@ -23,7 +23,7 @@ var BotValidator = function(){
 	this.validate = function(bot){
 		if (addedBots.indexOf(bot.name) === -1){
 			addedBots.push(bot.name);
-			return (!!bot.name && !!bot.uri);
+			return (!!bot.name && !!bot.uri && !!bot.email);
 		}
 		return false;
 	};
