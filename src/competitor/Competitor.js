@@ -14,7 +14,7 @@ var Competitor = function(eventStore, bot, competitorDetails){
 		var eventDetails = {
 			id : competitorDetails.id,
 			name : competitorDetails.name,
-			gravatarUri : Gravatar.url(competitorDetails.email || '')
+			gravatarUri : Gravatar.url(competitorDetails.email || '', {s: 100})
 		};
 		eventStore.notify(NEW_COMPETITOR_EVENT, eventDetails);
 	}

@@ -7,7 +7,7 @@ var fakeEventStore = {
 	notify : function(){}
 };
 
-describe('Bot Controller Tests', function(){
+describe('Regsiter Bot Tests', function(){	
 	describe('When created', function(){
 		it('Then competitor factory is created with event store', function(done){
 			var mockCompetitorFactory = new MockCompetitorFactory(),

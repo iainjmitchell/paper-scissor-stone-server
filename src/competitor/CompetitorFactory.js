@@ -7,7 +7,8 @@ var CompetitorFactory = function(eventStore){
 		var bot = new Bot(competitor.uri),
 			competitorDetails = {
 				id : uuid.v4(),
-				name : competitor.name
+				name : competitor.name,
+				email : competitor.email
 			};
 		return new Competitor(eventStore, bot, competitorDetails);
 	};

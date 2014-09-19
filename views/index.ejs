@@ -15,7 +15,7 @@
     <script src="javascripts/jquery-competitors.js"></script>
     <script>
       var eventStore = new EventStore();
-      var events = ['newCompetitor'];
+      var events = ['newCompetitor', 'newRoundStarted', 'score'];
       var eventAdapter = new IOEventAdapter(events, eventStore);
       var currentCompetitors = <%- JSON.stringify(competitors) %>;
 
