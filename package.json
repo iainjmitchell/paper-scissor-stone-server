@@ -25,7 +25,7 @@
     "gravatar": "^1.0.6",
     "httpsync": "0.0.8",
     "less-middleware": "*",
-    "socket.io": "~1.0.6",
+    "socket.io": "~2.0.0",
     "node-uuid": "^1.4.1"
   },
   "devDependencies": {
