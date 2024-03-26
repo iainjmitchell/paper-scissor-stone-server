@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "ejs": "*",
-    "express": "3.4.8",
+    "express": "4.19.2",
     "gravatar": "^1.0.6",
     "httpsync": "0.0.8",
     "less-middleware": "*",
